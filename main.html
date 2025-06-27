@@ -1,0 +1,334 @@
+<!doctype html>
+<html>
+<head>
+    <title>Main Page</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #007bff, #370171);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        h1 {
+            color: white;
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        h1::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background-color: #ffffff;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .button-container a {
+            text-decoration: none;
+        }
+
+        .button-container button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            background-color: #ffffff;
+            color: rgb(0, 0, 0);
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            min-width: 120px;
+        }
+
+        .button-container button:hover {
+            background-color: #b3b3b3;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 123, 255, 0.2);
+        }
+
+        .button-container button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+        }
+
+        .description-container {
+            max-width: 800px;
+            width: 100%;
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .description-container img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .description-container .description-text {
+            font-size: 18px;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            line-height: 1.6;
+        }
+
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0; top: 0;
+            width: 100%; height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 320px;
+            font-family: 'Roboto', sans-serif;
+        }
+        .modal-header {
+            font-size: 22px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .close-btn {
+            float: right;
+            cursor: pointer;
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+        input[type="number"], input[type="checkbox"] {
+            margin-top: 5px;
+        }
+        button.save-btn {
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button.save-btn:hover {
+            background-color: #0056b3;
+        }
+        #settingsBtn {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background-color: #ffffff;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 9999;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        #settingsBtn:hover {
+            background-color: #e6e6e6;
+            transform: scale(1.05);
+        }
+
+        #settingsBtn img {
+            display: block;
+            width: 24px;
+            height: 24px;
+        }
+        #userBtn {
+            position: fixed;
+            top: 15px;
+            right: 60px; /* Lângă settingsBtn */
+            background-color: #ffffff;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 9999;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        #userBtn:hover {
+            background-color: #e6e6e6;
+            transform: scale(1.05);
+        }
+        #userBtn img {
+            display: block;
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Selectați o cameră</h1>
+
+    <button id="settingsBtn" title="Setări">
+        <img src="https://cdn-icons-png.flaticon.com/512/126/126472.png" alt="Setări" width="24" height="24">
+    </button>
+    <button id="userBtn" title="Cont utilizator">
+        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Cont" width="24" height="24">
+    </button>
+    <div class="button-container">
+        {% for device in devices %}
+            <a href="{{ url_for('sensor_data', deviceID=device.name) }}">
+                <button>{{device.name|upper}}</button>
+            </a>
+        {% endfor %}
+    </div>
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeUserModal">&times;</span>
+            <div class="modal-header">Cont utilizator</div>
+
+            <button class="save-btn" onclick="window.location.href='/logout'">Delogare</button>
+            <button class="save-btn" style="background-color: #dc3545; margin-top:10px;"
+                    onclick="if(confirm('Sigur vrei să-ți ștergi contul?')) window.location.href='/delete_account';">
+            Șterge contul
+            </button>
+        </div>
+        </div>
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <div class="modal-header">Setări</div>
+
+            <label>
+                <input type="checkbox" id="alertSystemToggle" />
+                Sistem alertă activat
+            </label>
+
+            <label for="severityFactor">Factor severitate:</label>
+            <input type="number" id="severityFactor" min="1" step="0.1" value="1.0" />
+
+            <label for="alertInterval">Interval între alerte sonore (secunde):</label>
+            <input type="number" id="alertInterval" min="1" step="1" value="60" />
+
+            <label for="alertDuration">Durata alertei (secunde):</label>
+            <input type="number" id="alertDuration" min="1" step="1" value="30" />
+
+            <button class="save-btn" id="saveSettings">Salvează</button>
+            <p id="validationMsg" style="color:red; margin-top:10px; display:none;"></p>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('settingsModal');
+        const btn = document.getElementById('settingsBtn');
+        const span = document.getElementById('closeModal');
+        const saveBtn = document.getElementById('saveSettings');
+        const alertIntervalInput = document.getElementById('alertInterval');
+        const alertDurationInput = document.getElementById('alertDuration');
+        const validationMsg = document.getElementById('validationMsg');
+
+        btn.onclick = function() {
+            modal.style.display = "block";
+            validationMsg.style.display = "none";
+        }
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        saveBtn.onclick = function() {
+            const alertInterval = parseInt(alertIntervalInput.value, 10);
+            const alertDuration = parseInt(alertDurationInput.value, 10);
+
+            if (alertDuration >= alertInterval) {
+                validationMsg.textContent = "Durata alertei trebuie să fie mai mică decât intervalul dintre alerte.";
+                validationMsg.style.display = "block";
+                return;
+            }
+
+            validationMsg.style.display = "none";
+
+            // Aici poți salva valorile în backend (prin AJAX/fetch) sau localStorage
+            const settings = {
+                alertEnabled: document.getElementById('alertSystemToggle').checked,
+                severityFactor: parseFloat(document.getElementById('severityFactor').value),
+                alertInterval: alertInterval,
+                alertDuration: alertDuration
+            };
+
+            console.log("Setări salvate:", settings);
+
+            // Exemplu de trimitere la backend (opțional)
+            
+            fetch('/save_settings', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(settings)
+            }).then(res => res.json())
+              .then(data => console.log(data))
+              .catch(err => console.error(err));
+            
+
+            modal.style.display = "none";
+        };
+    </script>
+    <script>
+        const userModal = document.getElementById('userModal');
+        const userBtn = document.getElementById('userBtn');
+        const closeUserModal = document.getElementById('closeUserModal');
+
+        userBtn.onclick = function() {
+            userModal.style.display = "block";
+        };
+
+        closeUserModal.onclick = function() {
+            userModal.style.display = "none";
+        };
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+            if (event.target == userModal) {
+                userModal.style.display = "none";
+            }
+        };
+    </script>
+</body>
+</html>
